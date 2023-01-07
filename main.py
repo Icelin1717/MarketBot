@@ -13,7 +13,8 @@ with open(file='./config.json', mode='r', encoding='UTF-8') as jfile:
     config = json.load(jfile)
 
 intents = discord.Intents.all()
-bot = commands.Bot(command_prefix='!', intents=intents)
+activity = discord.Game(name='斯普拉遁3')
+bot = commands.Bot(command_prefix='!', intents=intents, activity=activity)
 
 
 @bot.event
