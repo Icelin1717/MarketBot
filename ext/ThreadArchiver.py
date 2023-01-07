@@ -11,7 +11,12 @@ class ThreadArchiver(commands.Cog):
         self.bot = bot
         self.config = config
 
-    # ! special methods
+    """
+    ! special methods
+    These methods will be automatically called on some specific event.
+    cog_load is called when this Cog class is loaded.
+    cog_unload is called when it is unloaded.
+    """
     def cog_load(self):
         self.threadArchive.start()
     def cog_unload(self):
