@@ -13,7 +13,8 @@ with open(file='./config.json', mode='r', encoding='UTF-8') as jfile:
     config = json.load(jfile)
 
 intents = discord.Intents.all()
-bot = commands.Bot(command_prefix='!', intents=intents)
+activity = discord.Game(name='斯普拉遁3')
+bot = commands.Bot(command_prefix='!', intents=intents, activity=activity)
 
 
 @bot.event
@@ -24,13 +25,13 @@ async def on_ready():
     for filename in os.listdir('./ext'):
         if filename.endswith('.py'):
             await bot.load_extension(f'ext.{filename[:-3]}')
-    print("message!")
 
 @bot.command()
 @commands.is_owner()
 async def ping(ctx):
     await ctx.send('The bot is working fine!')
 
+# load a cog extension
 @bot.command()
 @commands.is_owner()
 async def load(ctx, *args):
@@ -41,6 +42,7 @@ async def load(ctx, *args):
         else:
             await ctx.send(f'Failed to load extension "{ext}".')
 
+# unload a cog extension
 @bot.command()
 @commands.is_owner()
 async def unload(ctx, *args):
@@ -51,6 +53,7 @@ async def unload(ctx, *args):
         else:
             await ctx.send(f'Failed to unload extension "{ext}".')
 
+# reload a cog extension
 @bot.command()
 @commands.is_owner()
 async def reload(ctx, *args):
