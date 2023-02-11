@@ -3,8 +3,6 @@
         "guildId",
         "teamupChannelsId",
         "threadArchiverInterval",
-        "threadTime",
-        "eventPollingInterval",
-        "webhookEventsChannelsId"
+        "threadTime"
     ]
 }

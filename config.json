@@ -9,11 +9,5 @@
         1057246176862285825
     ],
     "threadArchiverInterval": 86400,
-    "threadTime": 172800,
-
-    "eventPollingInterval": 15,
-    "webhookEventsChannelsId": [
-        1070349732926472262
-    ]
-
+    "threadTime": 172800
 }
