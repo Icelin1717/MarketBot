@@ -28,7 +28,7 @@ class ThreadArchiver(commands.Cog):
         print('threadArchiver was called')
         current_time = round(datetime.now().timestamp())
 
-        for channel in [self.bot.get_channel(id) for id in self.config["teamupChannels"]]:
+        for channel in [self.bot.get_channel(id) for id in self.config["teamupChannelsId"]]:
             
             if channel == None: continue
             for thread in channel.threads:

@@ -1,5 +1,7 @@
 {
-    "teamupChannels": [
+    "guildId": 1007461472382759022,
+
+    "teamupChannelsId": [
         1007475387732860988,
         1007461472839933994,
         1011930686883635251,
@@ -7,6 +9,11 @@
         1057246176862285825
     ],
     "threadArchiverInterval": 86400,
-    "threadTime": 172800
+    "threadTime": 172800,
+
+    "eventPollingInterval": 15,
+    "webhookEventsChannelsId": [
+        1070349732926472262
+    ]
 
 }

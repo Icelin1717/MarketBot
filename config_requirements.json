@@ -1,7 +1,10 @@
 {
     "requirements": [
-        "teamupChannels",
+        "guildId",
+        "teamupChannelsId",
         "threadArchiverInterval",
-        "threadTime"
+        "threadTime",
+        "eventPollingInterval",
+        "webhookEventsChannelsId"
     ]
 }
