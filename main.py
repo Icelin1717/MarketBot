@@ -1,4 +1,5 @@
 import discord
+from discord import app_commands
 import json
 from discord.ext import commands, tasks
 import os
@@ -26,43 +27,76 @@ async def on_ready():
         if filename.endswith('.py'):
             await bot.load_extension(f'ext.{filename[:-3]}')
 
-@bot.command()
+    # sync application commands
+    try:
+        synced = await bot.tree.sync()
+        print(f"Synced {len(synced)} command(s)")
+    except Exception as e:
+        print(e)
+
+
+# ping command
+@bot.tree.command(name="ping", description="Ping the MarketBot")
 @commands.is_owner()
-async def ping(ctx):
-    await ctx.send('The bot is working fine!')
+async def ping(interaction: discord.Interaction):
+    await interaction.response.send_message('The bot is working fine!')
+
+
+# show all loaded extensions
+@bot.tree.command(name="show_extensions", description="Show all loaded extensions")
+@commands.is_owner()
+async def show_extensions(interaction: discord.Interaction):
+    response = "```\n"
+    for ext_name in list(bot.extensions.keys()):
+        response += ext_name + "\n"
+    response += "```"
+    await interaction.response.send_message(response)
+
 
 # load a cog extension
-@bot.command()
+@bot.tree.command(name="load", description="Load a cog extension")
+@app_commands.describe(ext="the extension to load")
 @commands.is_owner()
-async def load(ctx, *args):
-    for ext in args:
-        if(f'{ext}.py' in os.listdir('./ext')):
+async def load(interaction: discord.Interaction, ext: str):
+    if(f'{ext}.py' in os.listdir('./ext')):
+        try:
             await bot.load_extension(f'ext.{ext}')
-            await ctx.send(f'Extension "{ext}" has been load.')
-        else:
-            await ctx.send(f'Failed to load extension "{ext}".')
+            await interaction.response.send_message(f'Extension "{ext}" has been load.')
+        except Exception as e:
+            await interaction.response.send_message(e)
+    else:
+        await interaction.response.send_message(f'Failed to load extension "{ext}".')
+
 
 # unload a cog extension
-@bot.command()
+@bot.tree.command(name="unload", description="Unload a cog extension")
+@app_commands.describe(ext="the extension to unload")
 @commands.is_owner()
-async def unload(ctx, *args):
-    for ext in args:
-        if(f'{ext}.py' in os.listdir('./ext')):
+async def unload(interaction: discord.Interaction, ext: str):
+    if(f'{ext}.py' in os.listdir('./ext')):
+        try:
             await bot.unload_extension(f'ext.{ext}')
-            await ctx.send(f'Extension "{ext}" has been unload.')
-        else:
-            await ctx.send(f'Failed to unload extension "{ext}".')
+            await interaction.response.send_message(f'Extension "{ext}" has been unload.')
+        except Exception as e:
+            await interaction.response.send_message(e)
+    else:
+        await interaction.response.send_message(f'Failed to unload extension "{ext}".')
+
 
 # reload a cog extension
-@bot.command()
+@bot.tree.command(name="reload", description="Reload a cog extension")
+@app_commands.describe(ext="the extension to reload")
 @commands.is_owner()
-async def reload(ctx, *args):
-    for ext in args:
-        if(f'{ext}.py' in os.listdir('./ext')):
+async def reload(interaction: discord.Interaction, ext: str):
+    if(f'{ext}.py' in os.listdir('./ext')):
+        try:
             await bot.reload_extension(f'ext.{ext}')
-            await ctx.send(f'Extension "{ext}" has been reload.')
-        else:
-            await ctx.send(f'Failed to reload extension "{ext}".')
+            await interaction.response.send_message(f'Extension "{ext}" has been reload.')
+        except Exception as e:
+            await interaction.response.send_message(e)
+    else:
+        await interaction.response.send_message(f'Failed to reload extension "{ext}".')
+
 
 if __name__ == '__main__' :
 

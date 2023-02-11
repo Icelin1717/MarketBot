@@ -1,6 +1,7 @@
 {
     "requirements": [
-        "teamupChannels",
+        "guildId",
+        "teamupChannelsId",
         "threadArchiverInterval",
         "threadTime"
     ]
