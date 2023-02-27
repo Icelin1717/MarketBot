@@ -67,6 +67,13 @@ async def load(interaction: discord.Interaction, ext: str):
     else:
         await interaction.response.send_message(f'Failed to load extension "{ext}".')
 
+    # sync application commands
+    try:
+        synced = await bot.tree.sync()
+        print(f"Synced {len(synced)} command(s)")
+    except Exception as e:
+        print(e)
+
 
 # unload a cog extension
 @bot.tree.command(name="unload", description="Unload a cog extension")
@@ -82,6 +89,13 @@ async def unload(interaction: discord.Interaction, ext: str):
     else:
         await interaction.response.send_message(f'Failed to unload extension "{ext}".')
 
+    # sync application commands
+    try:
+        synced = await bot.tree.sync()
+        print(f"Synced {len(synced)} command(s)")
+    except Exception as e:
+        print(e)
+
 
 # reload a cog extension
 @bot.tree.command(name="reload", description="Reload a cog extension")
@@ -96,6 +110,13 @@ async def reload(interaction: discord.Interaction, ext: str):
             await interaction.response.send_message(e)
     else:
         await interaction.response.send_message(f'Failed to reload extension "{ext}".')
+
+    # sync application commands
+    try:
+        synced = await bot.tree.sync()
+        print(f"Synced {len(synced)} command(s)")
+    except Exception as e:
+        print(e)
 
 
 if __name__ == '__main__' :

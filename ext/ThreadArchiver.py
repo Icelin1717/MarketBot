@@ -11,6 +11,7 @@ class ThreadArchiver(commands.Cog):
         self.bot = bot
         self.config = config
 
+
     """
     ! special methods
     These methods will be automatically called on some specific event.
@@ -18,9 +19,12 @@ class ThreadArchiver(commands.Cog):
     cog_unload is called when it is unloaded.
     """
     def cog_load(self):
+        print('Extension "ThreadArchiver" has been loaded')
         self.threadArchive.start()
     def cog_unload(self):
+        print('Extension "ThreadArchiver" has been unloaded')
         self.threadArchive.stop()
+
 
     # Archive unused threads on a regular basis
     @tasks.loop(seconds=config["threadArchiverInterval"])
