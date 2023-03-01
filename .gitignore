@@ -129,4 +129,3 @@ dmypy.json
 .pyre/
 
 .vscode/
-webhook_event.json

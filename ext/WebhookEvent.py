@@ -29,6 +29,10 @@ class WebhookEvent(commands.Cog):
         with open(file='webhook_event.json', mode='w', encoding='UTF-8') as jfile:
             json.dump(self.webhook_event, jfile)
 
+    def read_event(self):
+        with open(file='webhook_event.json', mode='r', encoding='UTF-8') as jfile:
+            self.webhook_event = json.load(jfile)
+
 
     """
     ! special methods
@@ -46,6 +50,7 @@ class WebhookEvent(commands.Cog):
     @app_commands.command(name="list_webhook_event", description="list all existing webhook events")
     @commands.is_owner()
     async def list_webhook_event(self, interaction: discord.Interaction):
+        self.read_event()
         message = "```\n"
 
         guild = self.bot.get_guild(self.config["guildId"])
@@ -88,6 +93,7 @@ class WebhookEvent(commands.Cog):
     # listen for messages from webhook with a prifix 'Webhook Event'
     @commands.Cog.listener()
     async def on_message(self, msg):
+        self.read_event()
         if (msg.webhook_id is not None) and (msg.content.startswith("Webhook Event")):  # if the message is sent by WebhookEvent
             try:
                 index = msg.content.split("\n")
