@@ -25,10 +25,12 @@ class WebhookEvent(commands.Cog):
                 self.webhook_event = json.load(jfile)                
 
     # save webhook event to 'webhook_event.json'
+    # TODO: switch the webhook event to external DB
     def save_event(self):
         with open(file='webhook_event.json', mode='w', encoding='UTF-8') as jfile:
             json.dump(self.webhook_event, jfile)
 
+    # TODO: switch the webhook event to external DB
     def read_event(self):
         with open(file='webhook_event.json', mode='r', encoding='UTF-8') as jfile:
             self.webhook_event = json.load(jfile)
