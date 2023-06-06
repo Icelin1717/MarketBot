@@ -56,8 +56,11 @@ class WebhookEvent(commands.Cog):
         guild = self.bot.get_guild(self.config["guildId"])
         for event_name, role_id in self.webhook_event.items():
             role = discord.utils.get(guild.roles, id=role_id)
-            message += event_name + ": " + role.name + "\n"
-        
+            if role:
+                message += event_name + ": " + role.name + "\n"
+            else:
+                message += event_name + ": " + str(role_id) + "(找不到此ID的身分組)\n"
+
         message += "```"
         await interaction.response.send_message(message)
         
