@@ -25,10 +25,12 @@ class WebhookEvent(commands.Cog):
                 self.webhook_event = json.load(jfile)                
 
     # save webhook event to 'webhook_event.json'
+    # TODO: switch the webhook event to external DB
     def save_event(self):
         with open(file='webhook_event.json', mode='w', encoding='UTF-8') as jfile:
             json.dump(self.webhook_event, jfile)
 
+    # TODO: switch the webhook event to external DB
     def read_event(self):
         with open(file='webhook_event.json', mode='r', encoding='UTF-8') as jfile:
             self.webhook_event = json.load(jfile)
@@ -56,8 +58,11 @@ class WebhookEvent(commands.Cog):
         guild = self.bot.get_guild(self.config["guildId"])
         for event_name, role_id in self.webhook_event.items():
             role = discord.utils.get(guild.roles, id=role_id)
-            message += event_name + ": " + role.name + "\n"
-        
+            if role:
+                message += event_name + ": " + role.name + "\n"
+            else:
+                message += event_name + ": " + str(role_id) + "(找不到此ID的身分組)\n"
+
         message += "```"
         await interaction.response.send_message(message)
         

@@ -123,7 +123,7 @@ if __name__ == '__main__' :
 
     # check if TOKEN env_var exist
     if 'TOKEN' not in env_var:
-        print(f"Error: enviroment variable TOKEN is missing")
+        print(f"Error: environment variable TOKEN is missing")
         quit()
 
     # check config params
