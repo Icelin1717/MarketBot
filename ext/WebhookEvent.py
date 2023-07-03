@@ -50,7 +50,7 @@ class WebhookEvent(commands.Cog):
 
     # list all existing webhook events
     @app_commands.command(name="list_webhook_event", description="list all existing webhook events")
-    @commands.is_owner()
+    @app_commands.checks.has_role(config["adminRoleId"])
     async def list_webhook_event(self, interaction: discord.Interaction):
         self.read_event()
         message = "```\n"
@@ -70,7 +70,7 @@ class WebhookEvent(commands.Cog):
     # add a new webhook event
     @app_commands.command(name="add_webhook_event", description="add a new webhook event")
     @app_commands.describe(event_name="The name to trigger event", role="The role to give when a user trigger this event")
-    @commands.is_owner()
+    @app_commands.checks.has_role(config["adminRoleId"])
     async def add_webhook_event(self, interaction: discord.Interaction, event_name: str, role: discord.Role):
         if event_name in self.webhook_event:
             await interaction.response.send_message("失敗。這個事件名稱已被使用過了")
@@ -84,7 +84,7 @@ class WebhookEvent(commands.Cog):
     # remove a webhook event
     @app_commands.command(name="remove_webhook_event", description="remove a webhook event")
     @app_commands.describe(event_name="The name to trigger event")
-    @commands.is_owner()
+    @app_commands.checks.has_role(config["adminRoleId"])
     async def remove_webhook_event(self, interaction: discord.Interaction, event_name: str):
         if event_name not in self.webhook_event:
             await interaction.response.send_message("失敗。這個事件名稱不存在")

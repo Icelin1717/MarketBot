@@ -37,14 +37,14 @@ async def on_ready():
 
 # ping command
 @bot.tree.command(name="ping", description="Ping the MarketBot")
-@commands.is_owner()
+@app_commands.checks.has_role(config["adminRoleId"])
 async def ping(interaction: discord.Interaction):
     await interaction.response.send_message('The bot is working fine!')
 
 
 # show all loaded extensions
 @bot.tree.command(name="show_extensions", description="Show all loaded extensions")
-@commands.is_owner()
+@app_commands.checks.has_role(config["adminRoleId"])
 async def show_extensions(interaction: discord.Interaction):
     response = "```\n"
     for ext_name in list(bot.extensions.keys()):
@@ -56,7 +56,7 @@ async def show_extensions(interaction: discord.Interaction):
 # load a cog extension
 @bot.tree.command(name="load", description="Load a cog extension")
 @app_commands.describe(ext="the extension to load")
-@commands.is_owner()
+@app_commands.checks.has_role(config["adminRoleId"])
 async def load(interaction: discord.Interaction, ext: str):
     if(f'{ext}.py' in os.listdir('./ext')):
         try:
@@ -78,7 +78,7 @@ async def load(interaction: discord.Interaction, ext: str):
 # unload a cog extension
 @bot.tree.command(name="unload", description="Unload a cog extension")
 @app_commands.describe(ext="the extension to unload")
-@commands.is_owner()
+@app_commands.checks.has_role(config["adminRoleId"])
 async def unload(interaction: discord.Interaction, ext: str):
     if(f'{ext}.py' in os.listdir('./ext')):
         try:
@@ -100,7 +100,7 @@ async def unload(interaction: discord.Interaction, ext: str):
 # reload a cog extension
 @bot.tree.command(name="reload", description="Reload a cog extension")
 @app_commands.describe(ext="the extension to reload")
-@commands.is_owner()
+@app_commands.checks.has_role(config["adminRoleId"])
 async def reload(interaction: discord.Interaction, ext: str):
     if(f'{ext}.py' in os.listdir('./ext')):
         try:
@@ -117,6 +117,15 @@ async def reload(interaction: discord.Interaction, ext: str):
         print(f"Synced {len(synced)} command(s)")
     except Exception as e:
         print(e)
+
+
+@bot.tree.error
+async def error_handler(interaction: discord.Interaction, error):
+    print(error)
+    if isinstance(error, app_commands.MissingRole):
+        await interaction.response.send_message("錯誤：你沒有執行這個指令的權限", ephemeral=True, delete_after=10)
+    else:
+        await interaction.response.send_message(f"發生了未知的錯誤，請聯繫管理員。\n錯誤訊息:\n{error}", ephemeral=True)
 
 
 if __name__ == '__main__' :
