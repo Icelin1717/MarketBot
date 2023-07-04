@@ -3,11 +3,7 @@ from discord import app_commands
 import json
 from discord.ext import commands, tasks
 import os
-from dotenv import load_dotenv
-
-# load .env if exist & load enviroment variables
-load_dotenv()
-env_var = os.environ
+import utils
 
 # load config
 with open(file='./config.json', mode='r', encoding='UTF-8') as jfile:
@@ -130,11 +126,6 @@ async def error_handler(interaction: discord.Interaction, error):
 
 if __name__ == '__main__' :
 
-    # check if TOKEN env_var exist
-    if 'TOKEN' not in env_var:
-        print(f"Error: environment variable TOKEN is missing")
-        quit()
-
     # check config params
     with open(file='./config_requirements.json', mode='r', encoding='UTF-8') as jfile:
         configRequirement = json.load(jfile)
@@ -146,4 +137,4 @@ if __name__ == '__main__' :
             quit()
     
     # start the bot
-    bot.run(env_var['TOKEN'])
+    bot.run(utils.get_bot_token())
