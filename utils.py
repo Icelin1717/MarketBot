@@ -38,3 +38,7 @@ def get_bot_token():
         print(f"Error: environment variable TOKEN is missing")
         quit()
     return env_var["TOKEN"]
+
+def db_insert(table: str, data: list):
+    worksheet = db.worksheet(table)
+    worksheet.append_row(data, 'RAW')
