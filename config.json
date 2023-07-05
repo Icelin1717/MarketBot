@@ -10,5 +10,7 @@
         1057246176862285825
     ],
     "threadArchiverInterval": 86400,
-    "threadTime": 172800
+    "threadTime": 172800,
+
+    "googleSheetKey": "1iap0VUUKY6N660oRnGfYpRPBdc-N5oLJUAuAdT0Tsn4"
 }
