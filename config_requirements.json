@@ -4,6 +4,7 @@
         "adminRoleId",
         "teamupChannelsId",
         "threadArchiverInterval",
-        "threadTime"
+        "threadTime",
+        "googleSheetKey"
     ]
 }
