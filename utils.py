@@ -42,3 +42,14 @@ def get_bot_token():
 def db_insert(table: str, data: list):
     worksheet = db.worksheet(table)
     worksheet.append_row(data, 'RAW')
+
+def db_remove(table: str, key, value):
+    worksheet = db.worksheet(table)
+    key_cell = worksheet.find(key, in_row=1, case_sensitive=True)
+    if key_cell is None:
+        raise Exception("Key is invalid")
+    target = worksheet.find(value, in_column=key_cell.col, case_sensitive=True)
+    if target is None:
+        raise Exception("Data is not found")
+    
+    worksheet.delete_row(target.row)

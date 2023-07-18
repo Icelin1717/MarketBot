@@ -52,8 +52,20 @@ class TitleRoleManage(commands.Cog):
     async def new_title(self, interaction: discord.Interaction, name: str, color: Choice[str], sort_id: typing.Optional[int] = 99999999):
         color_obj = discord.Colour.from_str(color.value)
         role = await self.guild.create_role(name=name, colour=color_obj, reason="透過MarketBot指令 'new_title' 建立")
-        utils.db_insert("titleRole", [sort_id, name, role.id])
+        utils.db_insert("titleRole", [str(sort_id), name, str(role.id)])
         await interaction.response.send_message(f"成功建立稱號 {role.mention}")
+
+    @app_commands.command(name="delete_title", description="刪除一種稱號")
+    @app_commands.describe(
+        title="欲刪除的稱號"
+    )
+    @app_commands.checks.has_role(config["adminRoleId"])
+    async def delete_title(self, interaction: discord.Interaction, title: discord.Role):
+        utils.db_remove("titleRole", "roleId", str(title.id))
+        name = title.name
+        await title.delete(reason="透過MarketBot指令 'delete_title' 刪除")
+        await interaction.response.send_message(f"成功刪除稱號 {name}")
+        
 
 async def setup(bot):
     global config
