@@ -39,12 +39,22 @@ def get_bot_token():
         quit()
     return env_var["TOKEN"]
 
-def db_insert(table: str, data: list):
-    worksheet = db.worksheet(table)
+def add_table(tableName: str, field: list):
+    worksheet = db.add_worksheet(tableName, 0, len(field))
+    worksheet.append_row(field, 'RAW')
+
+def remove_table(tableName: str):
+    worksheet = db.worksheet(tableName)
+    db.del_worksheet(worksheet)
+
+# insert a datapoint into a table
+def db_insert(tableName: str, data: list):
+    worksheet = db.worksheet(tableName)
     worksheet.append_row(data, 'RAW')
 
-def db_remove(table: str, key, value):
-    worksheet = db.worksheet(table)
+# remove a datapoint from a table through a key-value pair
+def db_remove(tableName: str, key, value):
+    worksheet = db.worksheet(tableName)
     key_cell = worksheet.find(key, in_row=1, case_sensitive=True)
     if key_cell is None:
         raise Exception("Key is invalid")
@@ -53,3 +63,15 @@ def db_remove(table: str, key, value):
         raise Exception("Data is not found")
     
     worksheet.delete_row(target.row)
+
+# find a datapoint from a table through a key-value pair
+def db_find(tableName: str, key, value):
+    worksheet = db.worksheet(tableName)
+    key_cell = worksheet.find(key, in_row=1, case_sensitive=True)
+    if key_cell is None:
+        raise Exception("Key is invalid")
+    target = worksheet.find(value, in_column=key_cell.col, case_sensitive=True)
+    if target is None:
+        raise Exception("Data is not found")
+
+    return worksheet.row_values(row=target.row)

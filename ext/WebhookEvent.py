@@ -47,7 +47,7 @@ class WebhookEvent(commands.Cog):
     def cog_unload(self):
         print('Extension "WebhookEvent" has been unloaded')
 
-
+    # TODO: to refator
     # list all existing webhook events
     @app_commands.command(name="list_webhook_event", description="list all existing webhook events")
     @app_commands.checks.has_role(config["adminRoleId"])
@@ -67,6 +67,7 @@ class WebhookEvent(commands.Cog):
         await interaction.response.send_message(message)
         
 
+    # TODO: to refator
     # add a new webhook event
     @app_commands.command(name="add_webhook_event", description="add a new webhook event")
     @app_commands.describe(event_name="The name to trigger event", role="The role to give when a user trigger this event")
@@ -81,6 +82,7 @@ class WebhookEvent(commands.Cog):
         self.save_event()
 
 
+    # TODO: to refator
     # remove a webhook event
     @app_commands.command(name="remove_webhook_event", description="remove a webhook event")
     @app_commands.describe(event_name="The name to trigger event")
@@ -95,6 +97,7 @@ class WebhookEvent(commands.Cog):
         self.save_event()
 
 
+    # TODO: to refator
     # listen for messages from webhook with a prifix 'Webhook Event'
     @commands.Cog.listener()
     async def on_message(self, msg):
