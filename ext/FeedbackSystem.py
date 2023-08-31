@@ -2,7 +2,7 @@ import discord
 from discord import app_commands, ui
 from discord.ext import commands
 import json
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 import utils
 
 with open(file='./config.json', mode='r', encoding='UTF-8') as jfile:
@@ -12,7 +12,8 @@ class FeedbackModal(ui.Modal, title='意見回饋'):
     content = ui.TextInput(label="在這邊寫下您的意見", style=discord.TextStyle.paragraph, min_length=3)
 
     async def on_submit(self, interaction: discord.Interaction):
-        time = datetime.now().strftime("%Y/%m/%d %H:%M:%S")        
+        stime = datetime.utcnow().replace(tzinfo=timezone.utc)
+        time = stime.astimezone(timezone(timedelta(hours=8))).strftime("%Y/%m/%d %H:%M:%S")
         data = [time, interaction.user.name, interaction.user.display_name, self.content.value]
         utils.db_insert("feedback", data)
         await interaction.response.send_message(f'感謝您的回饋！以下是您所提交的內容：```\n{self.content.value}```', ephemeral=True)
