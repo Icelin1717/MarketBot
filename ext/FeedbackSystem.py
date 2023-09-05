@@ -8,15 +8,16 @@ import utils
 with open(file='./config.json', mode='r', encoding='UTF-8') as jfile:
     config = json.load(jfile)
 
-class FeedbackModal(ui.Modal, title='意見回饋'):
-    content = ui.TextInput(label="在這邊寫下您的意見", style=discord.TextStyle.paragraph, min_length=3)
+class FeedbackModal(ui.Modal, title='建議與回饋'):
+    content1 = ui.TextInput(label="在這邊寫下你的建議", style=discord.TextStyle.paragraph, min_length=3, max_length=1500, required=True)
+    content2 = ui.TextInput(label="希望新增什麼樣的身份組？", style=discord.TextStyle.paragraph, min_length=3, max_length=1500, required=False)
 
     async def on_submit(self, interaction: discord.Interaction):
         stime = datetime.utcnow().replace(tzinfo=timezone.utc)
         time = stime.astimezone(timezone(timedelta(hours=8))).strftime("%Y/%m/%d %H:%M:%S")
-        data = [time, interaction.user.name, interaction.user.display_name, self.content.value]
+        data = [time, interaction.user.name, interaction.user.display_name, self.content1.value, self.content1.value]
         utils.db_insert("feedback", data)
-        await interaction.response.send_message(f'感謝您的回饋！以下是您所提交的內容：```\n{self.content.value}```', ephemeral=True)
+        await interaction.response.send_message(f'感謝你的回饋！以下是您所提交的內容：\n\n在這邊寫下你的建議\n```{self.content1.value}\n\n希望新增什麼樣的身份組？\n```{self.content2.value}```', ephemeral=True)
 
 class FeedbackView(ui.View):
     def __init__(self):
@@ -49,7 +50,7 @@ class FeedbackSystem(commands.Cog):
     @app_commands.command(name='create_feedback_view', description="產生一個回饋終端")
     @app_commands.checks.has_role(config["adminRoleId"])
     async def create_feedback_view(self, interaction: discord.Interaction):
-        await interaction.response.send_message("請點擊下方按鈕以開始填寫回饋", view=FeedbackView())
+        await interaction.response.send_message("歡迎大家提供建議", view=FeedbackView())
 
 
 async def setup(bot):
