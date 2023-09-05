@@ -15,9 +15,9 @@ class FeedbackModal(ui.Modal, title='建議與回饋'):
     async def on_submit(self, interaction: discord.Interaction):
         stime = datetime.utcnow().replace(tzinfo=timezone.utc)
         time = stime.astimezone(timezone(timedelta(hours=8))).strftime("%Y/%m/%d %H:%M:%S")
-        data = [time, interaction.user.name, interaction.user.display_name, self.content1.value, self.content1.value]
+        data = [time, interaction.user.name, interaction.user.display_name, self.content1.value, self.content2.value]
         utils.db_insert("feedback", data)
-        await interaction.response.send_message(f'感謝你的回饋！以下是您所提交的內容：\n\n在這邊寫下你的建議\n```{self.content1.value}\n\n希望新增什麼樣的身份組？\n```{self.content2.value}```', ephemeral=True)
+        await interaction.response.send_message(f'感謝你的回饋！以下是您所提交的內容：\n\n在這邊寫下你的建議\n```{self.content1.value}```\n\n希望新增什麼樣的身份組？\n```{self.content2.value}```', ephemeral=True)
 
 class FeedbackView(ui.View):
     def __init__(self):
