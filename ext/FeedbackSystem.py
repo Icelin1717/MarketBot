@@ -50,7 +50,7 @@ class FeedbackSystem(commands.Cog):
     @app_commands.command(name='create_feedback_view', description="產生一個回饋終端")
     @app_commands.checks.has_role(config["adminRoleId"])
     async def create_feedback_view(self, interaction: discord.Interaction):
-        await interaction.response.send_message("歡迎大家提供建議", view=FeedbackView())
+        await interaction.response.send_message("請點擊下方按鈕以開始填寫回饋", view=FeedbackView())
 
 
 async def setup(bot):
